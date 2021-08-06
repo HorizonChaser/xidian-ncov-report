@@ -1,0 +1,38 @@
+name: ncov daily report
+on: 
+  schedule:
+    - cron: '12 9 * * *'
+jobs:
+  daily-report:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: '[Prepare] Check out repo'
+      uses: actions/checkout@v2
+
+    - name: '[Prepare] Install Python'
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+
+    - name: '[Prepare] Install Python library'
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade requests
+
+    - name: '[Main] Commit report'
+      env:
+        username: ${{ secrets.USERNAME }}
+        pswd: ${{ secrets.PSWD }}
+        geo_info: ${{ secrets.GEO_INFO }}
+      run: |
+        python submit.py
+        echo "::set-env name=RESULT::$RES"
+
+    - name: '[Push] Push to WeChat'
+      uses: yakumioto/serverchan-action@v2
+      needs: 
+      with:
+        key: ${{ secrets.SCKEY }}
+        text: '$RES'

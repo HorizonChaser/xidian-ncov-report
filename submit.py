@@ -12,13 +12,15 @@ if os.path.exists("NOSUBMIT"):
 
 data = {}
 
-with open("./data.json","r") as fd:
-    data=json.load(fd)
-    
+with open("./data.json", "r") as fd:
+    data = json.load(fd)
+    data['geo_api_info'] = os.getenv("geo_info")
+
 conn = requests.Session()
 
 # Login
-result = conn.post('https://xxcapp.xidian.edu.cn/uc/wap/login/check',data={'username':data['_u'],'password':data['_p']})
+result = conn.post('https://xxcapp.xidian.edu.cn/uc/wap/login/check',
+                   data={'username': os.getenv("username"), 'password': os.getenv("pswd")})
 if result.status_code != 200:
     print('认证大失败')
     exit()
@@ -30,14 +32,15 @@ if result.status_code != 200:
     exit()
 
 if os.path.exists("last_get.html"):
-    os.rename("last_get.html","last_get.html.1")
+    os.remove("last_get.html.1")
+    os.rename("last_get.html", "last_get.html.1")
 
-with open("last_get.html","w") as fd:
+with open("last_get.html", "w") as fd:
     fd.write(result.text)
 
 # TODO: diff those two files to determine whether submission form has been updated, then delay the submission when necessary
 
-predef = json.loads(re.search('var def = ({.*});',result.text).group(1))
+predef = json.loads(re.search('var def = ({.*});', result.text).group(1))
 
 if "dump_geo" in sys.argv:
     print(predef['geo_api_info'])
@@ -52,5 +55,8 @@ del data['_u']
 del data['_p']
 predef.update(data)
 
-result = conn.post('https://xxcapp.xidian.edu.cn/ncov/wap/default/save',data=predef)
+result = conn.post(
+    'https://xxcapp.xidian.edu.cn/ncov/wap/default/save', data=predef)
 print(result.text)
+
+os.environ['RES'] = result.text
