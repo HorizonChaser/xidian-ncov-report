@@ -4,7 +4,8 @@ on:
     - cron: '12 9 * * *'
   workflow_dispatch:
 
-ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
   daily-report:
