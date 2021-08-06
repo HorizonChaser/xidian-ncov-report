@@ -33,7 +33,6 @@ jobs:
 
     - name: '[Push] Push to WeChat'
       uses: yakumioto/serverchan-action@v2
-      needs: 
       with:
         key: ${{ secrets.SCKEY }}
         text: '$RES'
