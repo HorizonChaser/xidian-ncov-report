@@ -39,4 +39,4 @@ jobs:
       uses: yakumioto/serverchan-action@v2
       with:
         key: ${{ secrets.SCKEY }}
-        text: '$RES'
+        text: $RES
