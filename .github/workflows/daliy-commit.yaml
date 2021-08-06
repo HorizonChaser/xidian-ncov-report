@@ -2,6 +2,7 @@ name: ncov daily report
 on: 
   schedule:
     - cron: '12 9 * * *'
+  workflow_dispatch:
 jobs:
   daily-report:
     runs-on: ubuntu-latest
