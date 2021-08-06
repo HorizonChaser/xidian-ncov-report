@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
 jobs:
   daily-report:
