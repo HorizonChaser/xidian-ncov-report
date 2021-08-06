@@ -26,17 +26,11 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install --upgrade requests
 
-    - name: '[Main] Commit report'
+    - name: '[Main] Commit report and Push to WeChat'
       env:
         username: ${{ secrets.USERNAME }}
         pswd: ${{ secrets.PSWD }}
         geo_info: ${{ secrets.GEO_INFO }}
+        sckey: ${{ secrets.SCKEY }}
       run: |
         python submit.py
-        echo "::set-env name=RESULT::$RES"
-
-    - name: '[Push] Push to WeChat'
-      uses: yakumioto/serverchan-action@v2
-      with:
-        key: ${{ secrets.SCKEY }}
-        text: $RESULT

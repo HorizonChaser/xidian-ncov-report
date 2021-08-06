@@ -6,6 +6,8 @@ import requests
 import re
 import sys
 import os
+from datetime import datetime
+import urllib.parse
 
 if os.path.exists("NOSUBMIT"):
     exit()
@@ -57,6 +59,17 @@ predef.update(data)
 
 result = conn.post(
     'https://xxcapp.xidian.edu.cn/ncov/wap/default/save', data=predef)
-print(result.text)
 
-os.environ['RES'] = result.text
+pushMsg = datetime.today().strftime('%Y-%m-%d')
+pushURL = "https://sctapi.ftqq.com/" + os.getenv("SCKEY") + ".send?title="
+
+if "成功" in result.text:
+    pushMsg = urllib.parse.quote(pushMsg + " 填报成功")
+    requests.post(pushURL + pushMsg)
+elif "填报过了" in result.text:
+    pushMsg = urllib.parse.quote(pushMsg + " 已经填报过了")
+    requests.post(pushURL + pushMsg)
+else:
+    pushMsg = urllib.parse.quote(
+        pushMsg + " 发生了点儿意外, 请查看详情" + "&desp=" + result.text)
+    requests.post(pushURL + pushMsg)
