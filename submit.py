@@ -61,7 +61,7 @@ result = conn.post(
     'https://xxcapp.xidian.edu.cn/ncov/wap/default/save', data=predef)
 
 pushMsg = datetime.today().strftime('%Y-%m-%d')
-pushURL = "https://sctapi.ftqq.com/" + os.getenv("SCKEY") + ".send?title="
+pushURL = "https://sctapi.ftqq.com/" + os.getenv("sckey") + ".send?title="
 
 if "成功" in result.text:
     pushMsg = urllib.parse.quote(pushMsg + " 填报成功")

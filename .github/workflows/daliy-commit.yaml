@@ -4,9 +4,6 @@ on:
     - cron: '12 9 * * *'
   workflow_dispatch:
 
-env:
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-
 jobs:
   daily-report:
     runs-on: ubuntu-latest
@@ -34,3 +31,4 @@ jobs:
         sckey: ${{ secrets.SCKEY }}
       run: |
         python submit.py
+
