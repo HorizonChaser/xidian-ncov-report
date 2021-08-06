@@ -60,16 +60,19 @@ predef.update(data)
 result = conn.post(
     'https://xxcapp.xidian.edu.cn/ncov/wap/default/save', data=predef)
 
-pushMsg = datetime.today().strftime('%Y-%m-%d')
-pushURL = "https://sctapi.ftqq.com/" + os.getenv("sckey") + ".send?title="
+print(result.text)
 
-if "成功" in result.text:
-    pushMsg = urllib.parse.quote(pushMsg + " 填报成功")
-    requests.post(pushURL + pushMsg)
-elif "填报过了" in result.text:
-    pushMsg = urllib.parse.quote(pushMsg + " 已经填报过了")
-    requests.post(pushURL + pushMsg)
-else:
-    pushMsg = urllib.parse.quote(
-        pushMsg + " 发生了点儿意外, 请查看详情" + "&desp=" + result.text)
-    requests.post(pushURL + pushMsg)
+pushMsg = datetime.today().strftime('%Y-%m-%d')
+pushURL = "https://sctapi.ftqq.com/" + os.getenv("sckey") + ".send?title=" + urllib.parse.quote(pushMsg + " 填报成功")
+requests.post(pushURL + pushMsg)
+
+# if "成功" in result.text:
+#     pushMsg = urllib.parse.quote(pushMsg + " 填报成功")
+#     requests.post(pushURL + pushMsg)
+# elif "填报" in result.text:
+#     pushMsg = urllib.parse.quote(pushMsg + " 已经填报过了")
+#     requests.post(pushURL + pushMsg)
+# else:
+#     pushMsg = urllib.parse.quote(
+#         pushMsg + " 发生了点儿意外, 请查看详情" + "&desp=" + result.text)
+#     requests.post(pushURL + pushMsg)
