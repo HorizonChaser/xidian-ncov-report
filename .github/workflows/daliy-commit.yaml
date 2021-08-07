@@ -1,7 +1,7 @@
 name: ncov daily report
 on: 
   schedule:
-    - cron: '12 9 * * *'
+    - cron: '12 17 * * *'
   workflow_dispatch:
 
 jobs:
