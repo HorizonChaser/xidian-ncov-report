@@ -62,8 +62,8 @@ result = conn.post(
 
 print(result.text)
 
-pushMsg = datetime.today().strftime('%Y-%m-%d')
-pushURL = "https://sctapi.ftqq.com/" + os.getenv("sckey") + ".send?title=" + urllib.parse.quote(pushMsg + " 填报成功")
+pushMsg = datetime.today().strftime('%H:%M:%S')
+pushURL = "https://sctapi.ftqq.com/" + os.getenv("sckey") + ".send?title=" + urllib.parse.quote(pushMsg + " 填报成功 @ ")
 requests.post(pushURL + pushMsg)
 
 # if "成功" in result.text:
