@@ -9,6 +9,7 @@ import os
 from datetime import datetime
 import urllib.parse
 
+# Check if disabled
 if os.path.exists("NOSUBMIT"):
     exit()
 
@@ -52,10 +53,6 @@ with open("last_get.html", "w") as fd:
 
 predef = json.loads(re.search('var def = ({.*});', result.text).group(1))
 
-if "dump_geo" in sys.argv:
-    print(predef['geo_api_info'])
-    exit()
-
 try:
     del predef['jrdqtlqk']
     del predef['jrdqjcqk']
@@ -70,11 +67,15 @@ result = conn.post(
 
 print(result.text)
 
-pushMsg = datetime.today().strftime('%H:%M:%S')
+if os.getenv("sckey") == None or os.getenv("sckey") == "aaa":
+    print("WeChat Push Disabled")
+    exit()
+
+pushMsg = datetime.today().strftime('%Y:%m:%d')
 pushURL = "https://sctapi.ftqq.com/" + \
     os.getenv("sckey") + ".send?title=" + \
-    urllib.parse.quote(pushMsg + " 填报成功 @ ")
-requests.post(pushURL + pushMsg)
+    urllib.parse.quote(pushMsg + " 填报成功")
+requests.post(pushURL)
 
 # if "成功" in result.text:
 #     pushMsg = urllib.parse.quote(pushMsg + " 填报成功")
