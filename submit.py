@@ -17,6 +17,14 @@ data = {}
 with open("./data.json", "r") as fd:
     data = json.load(fd)
     data['geo_api_info'] = os.getenv("geo_info")
+    geo = json.loads(data["geo_api_info"])
+    data.update({"address": geo["formattedaddress"]})
+    data.update({"city": geo["addresscomponent"]["city"]})
+    data.update({"province": geo["addresscomponent"]["province"]})
+    data.update({"area": geo["addresscomponent"]["province"] + ' ' +
+                geo["addresscomponent"]["city"] + ' ' + geo["addresscomponent"]["district"]})
+    if data["city"].strip() == "" and data["province"] in ["北京市", "上海市", "重庆市", "天津市"]:
+        data["city"] = data["province"]
 
 conn = requests.Session()
 
@@ -63,7 +71,9 @@ result = conn.post(
 print(result.text)
 
 pushMsg = datetime.today().strftime('%H:%M:%S')
-pushURL = "https://sctapi.ftqq.com/" + os.getenv("sckey") + ".send?title=" + urllib.parse.quote(pushMsg + " 填报成功 @ ")
+pushURL = "https://sctapi.ftqq.com/" + \
+    os.getenv("sckey") + ".send?title=" + \
+    urllib.parse.quote(pushMsg + " 填报成功 @ ")
 requests.post(pushURL + pushMsg)
 
 # if "成功" in result.text:
