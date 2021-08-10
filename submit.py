@@ -9,9 +9,25 @@ import os
 from datetime import datetime
 import urllib.parse
 
+
+def pushToWeChat(msg):
+    timeStamp = datetime.today().strftime('%Y-%m-%d')
+    pushURL = "https://sctapi.ftqq.com/" + \
+        os.getenv("sckey") + ".send?title=" + \
+        urllib.parse.quote(timeStamp + str(msg))
+    requests.post(pushURL)
+
+
 # Check if disabled
 if os.path.exists("NOSUBMIT"):
     exit()
+
+isWeChatAvail = True
+
+# Check if WeChat push service available
+if os.getenv("sckey") == None or os.getenv("sckey") == "aaa":
+    print("WeChat Push Disabled")
+    isWeChatAvail = False
 
 data = {}
 
@@ -34,12 +50,16 @@ result = conn.post('https://xxcapp.xidian.edu.cn/uc/wap/login/check',
                    data={'username': os.getenv("username"), 'password': os.getenv("pswd")})
 if result.status_code != 200:
     print('认证大失败')
+    if not isWeChatAvail:
+        pushToWeChat(" 认证失败")
     exit()
 
 # Submit
 result = conn.get('https://xxcapp.xidian.edu.cn/ncov/wap/default/index')
 if result.status_code != 200:
     print('获取页面大失败')
+    if not isWeChatAvail:
+        pushToWeChat(" 获取页面失败")
     exit()
 
 if os.path.exists("last_get.html"):
@@ -66,16 +86,7 @@ result = conn.post(
     'https://xxcapp.xidian.edu.cn/ncov/wap/default/save', data=predef)
 
 print(result.text)
-
-if os.getenv("sckey") == None or os.getenv("sckey") == "aaa":
-    print("WeChat Push Disabled")
-    exit()
-
-pushMsg = datetime.today().strftime('%Y:%m:%d')
-pushURL = "https://sctapi.ftqq.com/" + \
-    os.getenv("sckey") + ".send?title=" + \
-    urllib.parse.quote(pushMsg + " 填报成功")
-requests.post(pushURL)
+pushToWeChat(" 填报成功")
 
 # if "成功" in result.text:
 #     pushMsg = urllib.parse.quote(pushMsg + " 填报成功")

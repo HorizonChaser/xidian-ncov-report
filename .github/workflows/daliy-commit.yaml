@@ -2,7 +2,7 @@ name: ncov daily report
 on: 
   workflow_dispatch:
   schedule:
-    - cron: '35 1 * * *'
+    - cron: '5 0 * * *'
   
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     - name: '[Prepare] Install Python'
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8.10'
+        python-version: '3.x'
         architecture: 'x64'
 
     - name: '[Prepare] Install Python library'
