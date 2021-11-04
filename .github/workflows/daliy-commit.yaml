@@ -31,5 +31,5 @@ jobs:
         geo_info: ${{ secrets.GEO_INFO }}
         sckey: ${{ secrets.SCKEY }}
       run: |
-        python submit.py
+        python submit_3chk.py
 
