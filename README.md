@@ -9,6 +9,8 @@
 
 ## 食用方法
 
+### 对于疫情通
+
 0. 本地安装好 Python 环境与**依赖** (大概也就一个 `requests`)
 1. fork 这个仓库, 然后下载到本地
 2. 在命令行中切换到这个仓库, 比如 `cd "xidian-ncov-report"`
@@ -21,7 +23,20 @@
    - `PSWD`: 必须项, 统一身份认证密码
    - `SCKEY`: 必须项, [Server 酱](https://sct.ftqq.com) 的推送 key, 用于实现微信推送
      - 要是不需要的话这一项的内容可以填aaa
-5. 没了, 建议从 Actions 中手动运行一次看看成不成功
+5. 在 `./.github/workflows/daliy-commit.yaml` 中
+   - 合理设置第 5 行的 cron 表达式, 例如 `5 0 * * *`
+   - 把最后一行的 `submit_3chk.py` 改成 `submit.py`
+6. 没了, 建议从 Actions 中手动运行一次看看成不成功
+
+### 对于晨午晚检
+
+0. 在本仓库的 Settings - Secrets 中, 新增以下四个 Secret:
+   - `GEO_INFO`: 必须项, 在第 3 步中保存的位置信息
+   - `USERNAME`: 必须项, 统一身份认证账号
+   - `PSWD`: 必须项, 统一身份认证密码
+   - `SCKEY`: 必须项, [Server 酱](https://sct.ftqq.com) 的推送 key, 用于实现微信推送
+     - 要是不需要的话这一项的内容可以填aaa
+1. 没了, 建议从 Actions 中手动运行一次看看成不成功
 
 ---
 
